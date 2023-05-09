@@ -1,16 +1,5 @@
 ﻿internal class Program
 {
-    private static string PrintAndReadLine(string description, string defaultValue)
-    {
-        System.Console.Write(description);
-        string? answer = System.Console.ReadLine();
-        if (String.IsNullOrEmpty(answer))
-        {
-            return defaultValue;
-        }
-        return answer;
-    }
-
     private static void Main(string[] args)
     {
         int imagesCount = 52;
