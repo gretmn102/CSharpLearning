@@ -20,8 +20,8 @@
             (setNameCommandName, setNameCommandDescription),
             (writeNameCommandName, writeNameCommandDescription),
             (setPasswordCommandName, setPasswordDescription),
-            (getConsoleColorsCommand, getConsoleColorsCommandDescription),
             (changeConsoleColorCommand, changeConsoleColorCommandDescription),
+            (getConsoleColorsCommand, getConsoleColorsCommandDescription),
             (helpCommandName, helpCommandDescription),
             (escCommandName, escCommandDescription),
         };
@@ -62,73 +62,51 @@
                     name = Console.ReadLine();
                     break;
                 case writeNameCommandName:
+                    if (name is null)
+                    {
+                        Console.WriteLine($"Сперва установите имя с помощью команды \"{setNameCommandName}\"");
+                        continue;
+                    }
+
                     if (password is null)
                     {
                         Console.WriteLine($"Сперва установите пароль командой \"{setPasswordCommandName}\"");
+                        continue;
                     }
-                    else
+
+                    Console.Write("Введите пароль: ");
+                    if (Console.ReadLine() != password)
                     {
-                        if (name is null)
-                        {
-                            Console.WriteLine($"Сперва установите имя с помощью команды \"{setNameCommandName}\"");
-                        }
-                        else
-                        {
-                            Console.Write("Введите пароль: ");
-                            if (Console.ReadLine() == password)
-                            {
-                                Console.WriteLine($"Ваше имя — {name}");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Пароль неверный, доступ запрещен!");
-                            }
-                        }
+                        Console.WriteLine("Пароль неверный, доступ запрещен!");
+                        continue;
                     }
+
+                    Console.WriteLine($"Ваше имя — {name}");
                     break;
                 case setPasswordCommandName:
-                    if (password is null)
-                    {
-                        Console.Write("Введите пароль: ");
-                        password = Console.ReadLine();
-                    }
-                    else
+                    if (password is not null)
                     {
                         Console.Write("Для установления нового пароля введите старый пароль: ");
-                        if (Console.ReadLine() == password)
-                        {
-                            Console.Write("Введите пароль: ");
-                            password = Console.ReadLine();
-                        }
-                        else
+                        if (Console.ReadLine() != password)
                         {
                             Console.WriteLine("Пароль неверный, доступ запрещен!");
+                            continue;
                         }
                     }
+
+                    Console.Write("Введите пароль: ");
+                    password = Console.ReadLine();
                     break;
                 case changeConsoleColorCommand:
-
                     Console.Write("Введите цвет консоли: ");
                     string? rawColor = Console.ReadLine();
-
-                    string notFoundColorMessage = $"Цвет {rawColor} не найден. Введите команду \"{getConsoleColorsCommand}\", чтобы узнать все доступные цвета.";
-
-                    if (rawColor is null)
+                    System.ConsoleColor color;
+                    if (rawColor is null || !consoleColors.TryGetValue(rawColor, out color))
                     {
-                        Console.WriteLine(notFoundColorMessage);
+                        Console.WriteLine($"Цвет {rawColor} не найден. Введите команду \"{getConsoleColorsCommand}\", чтобы узнать все доступные цвета.");
+                        continue;
                     }
-                    else
-                    {
-                        System.ConsoleColor color;
-                        if (consoleColors.TryGetValue(rawColor, out color))
-                        {
-                            Console.ForegroundColor = color;
-                        }
-                        else
-                        {
-                            Console.WriteLine(notFoundColorMessage);
-                        }
-                    }
+                    Console.ForegroundColor = color;
                     break;
                 case getConsoleColorsCommand:
                     Console.WriteLine("Доступные цвета для консоли: {0}", String.Join(", ", colorNames));
