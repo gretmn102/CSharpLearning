@@ -1,9 +1,12 @@
 ﻿internal class Program
 {
+    /// <summary>
     /// Удаляет предмет по указанному индексу и сдвигает массив справа налево
+    /// </summary>
     public static void ArrayRemoveAt<T>(ref T[] arr, int index)
     {
-        if (!(0 <= index && index < arr.Length)) {
+        if (!(0 <= index && index < arr.Length))
+        {
             throw new ArgumentException("index must be greater than or equal to zero and less than the length of the array", nameof(index));
         }
         int length = arr.Length - 1;
@@ -15,51 +18,67 @@
         Array.Resize(ref arr, length);
     }
 
-    private static string [] _fullNames = Array.Empty<string>();
-    private static string [] _positions = Array.Empty<string>();
-    private static int _profilesLength = 0;
-
-    public static string ToStringProfile(int index)
+    // Поскольку структуры еще недоступны, то для представления данных используется массив объектов,
+    // в котором первый элемент — id, второй — фио, а третий — занимая должность.
+    public static object[] ProfileInit(int id, string fullName, string position)
     {
-        if (!(0 <= index && index < _profilesLength)) {
-            throw new ArgumentException("index must be greater than or equal to zero and less than the length of the array", nameof(index));
-        }
-
-        return String.Concat(
-            $"Индекс: {index}", "\n",
-            $"ФИО: {_fullNames[index]}", "\n",
-            $"Должность: {_positions[index]}");
+        return new object[] { id, fullName, position };
     }
+
+    public static int ProfileGetId(object[] profile)
+    {
+        return (int)profile[0];
+    }
+
+    public static string ProfileGetFullName(object[] profile)
+    {
+        return (string)profile[1];
+    }
+
+    public static string ProfileGetPosition(object[] profile)
+    {
+        return (string)profile[2];
+    }
+
+    public static string ProfileToString(object[] profile)
+    {
+        return String.Concat(
+            $"Индекс: {ProfileGetId(profile)}", "\n",
+            $"ФИО: {ProfileGetFullName(profile)}", "\n",
+            $"Должность: {ProfileGetPosition(profile)}");
+    }
+
+    private static object[][] _profiles = Array.Empty<object[][]>();
+    private static int _profilesLength = 0;
 
     public static void AddProfile(string fullName, string position)
     {
-        Array.Resize(ref _fullNames, _profilesLength + 1);
-        _fullNames[_profilesLength] = fullName;
-        Array.Resize(ref _positions, _profilesLength + 1);
-        _positions[_profilesLength] = position;
+        Array.Resize(ref _profiles, _profilesLength + 1);
+        _profiles[_profilesLength] = ProfileInit(_profilesLength, fullName, position);
         _profilesLength++;
     }
 
     public static void RemoveProfile(int index)
     {
-        ArrayRemoveAt(ref _fullNames, index);
-        ArrayRemoveAt(ref _positions, index);
+        ArrayRemoveAt(ref _profiles, index);
         _profilesLength--;
     }
 
-    public static int SearchProfileByFullName(string pattern)
+    public static object[]? SearchProfileByFullName(string pattern)
     {
         string lowerPattern = pattern.ToLower();
-        string currentFullName;
+        string fullName;
+        object[] profile;
         for (int i = 0; i < _profilesLength; i++)
         {
-            currentFullName = _fullNames[i].ToLower();
-            if (currentFullName.Contains(lowerPattern))
+            profile = _profiles[i];
+            fullName = ProfileGetFullName(profile).ToLower();
+            if (fullName.Contains(lowerPattern))
             {
-                return i;
+                return profile;
             }
         }
-        return -1;
+        return null;
     }
 
     private static void UiPrintProfiles()
@@ -71,9 +90,15 @@
         }
 
         Console.WriteLine("Индекс | Имя | Занимая должность");
+        object[] profile;
+        string fullName;
+        string position;
         for (int i = 0; i < _profilesLength; i++)
         {
-            Console.WriteLine($"{i} | {_fullNames[i]} | {_positions[i]}");
+            profile = _profiles[i];
+            fullName = ProfileGetFullName(profile);
+            position = ProfileGetPosition(profile);
+            Console.WriteLine($"{i} | {fullName} | {position}");
         }
     }
 
@@ -105,7 +130,7 @@
             }
 
             Console.WriteLine($"Удаляю:");
-            Console.WriteLine(ToStringProfile(index));
+            Console.WriteLine(ProfileToString(_profiles[index]));
 
             RemoveProfile(index);
             Console.WriteLine("Досье успешно удалено!");
@@ -117,15 +142,15 @@
         Console.Write("Введите фамилию, имя или отчество (можно частично): ");
         string pattern = Console.ReadLine() ?? "";
 
-        int resultIndex = SearchProfileByFullName(pattern);
-        if (resultIndex < 0)
+        object[]? profile = SearchProfileByFullName(pattern);
+        if (profile == null)
         {
             Console.WriteLine($"Досье по запросу '{pattern}' не найдено!");
             return;
         }
 
         Console.WriteLine("Найдено следующее досье:");
-        Console.WriteLine(ToStringProfile(resultIndex));
+        Console.WriteLine(ProfileToString(profile));
     }
 
     private static void Main()
