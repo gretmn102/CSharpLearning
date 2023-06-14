@@ -2,13 +2,11 @@ namespace App
 {
     internal class View
     {
-        readonly Shop _shop;
-        readonly Hero _hero;
+        readonly HeroShopModel _model;
 
-        public View(Shop shop, Hero hero)
+        public View(HeroShopModel model)
         {
-            _shop = shop;
-            _hero = hero;
+            _model = model;
         }
 
         public static void PressToContinue()
@@ -29,13 +27,13 @@ namespace App
 
         public void BuyItem()
         {
-            ItemsContainer shopItemsContainer = _shop.ItemsContainer;
+            ItemsContainer shopItemsContainer = _model.Shop.ItemsContainer;
             int? index = DisplayAndSelectItem(shopItemsContainer);
+
             if (index.HasValue)
             {
                 Item selectedItem = shopItemsContainer[index.Value];
-                shopItemsContainer.RemoveAt(index.Value);
-                _hero.ItemsContainer.Add(selectedItem);
+                _model.BuyItem(index.Value);
                 Console.WriteLine($"Вы купили \"{selectedItem.Name}\", спасибо еще!");
             }
 
@@ -44,13 +42,12 @@ namespace App
 
         public void SellItem()
         {
-            ItemsContainer heroItemsContainer = _hero.ItemsContainer;
+            ItemsContainer heroItemsContainer = _model.Hero.ItemsContainer;
             int? index = DisplayAndSelectItem(heroItemsContainer);
             if (index.HasValue)
             {
                 Item selectedItem = heroItemsContainer[index.Value];
-                heroItemsContainer.RemoveAt(index.Value);
-                _shop.ItemsContainer.Add(selectedItem);
+                _model.SellItem(index.Value);
                 Console.WriteLine($"Вы продали \"{selectedItem.Name}\", спасибо еще!");
             }
 

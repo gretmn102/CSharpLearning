@@ -13,8 +13,8 @@ namespace App
             Shop shop = new(shopItemsContainer);
             ItemsContainer heroItemsContainer = new();
             Hero hero = new(heroItemsContainer);
-
-            View view = new(shop, hero);
+            HeroShopModel model = new(hero, shop);
+            View view = new(model);
             view.StartMenu();
         }
     }
