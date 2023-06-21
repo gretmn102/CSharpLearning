@@ -64,10 +64,15 @@ namespace App
             _currentPlayerIndex = (_currentPlayerIndex + 1) % _playersLength;
         }
 
-        internal void Reset()
+        public void Reset()
         {
             _firstPlayer.Battler.Reset();
             _secondPlayer.Battler.Reset();
+        }
+
+        public void Attack()
+        {
+            CurrentPlayer.Battler.Attack(OtherPlayer.Battler);
         }
 
         public GameState(Player firstPlayer, Player secondPlayer)

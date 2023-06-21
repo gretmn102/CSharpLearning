@@ -24,6 +24,11 @@ namespace App
 
         public int Damage { get; }
 
+        public void Attack(Battler enemy)
+        {
+            enemy.Hp -= Damage;
+        }
+
         public void Reset()
         {
             Hp = _maxHp;

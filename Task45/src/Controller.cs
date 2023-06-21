@@ -55,12 +55,11 @@ namespace App
             Player? loser = null;
             while (loser == null)
             {
+                _gameState.Attack();
+
                 currentPlayer = _gameState.CurrentPlayer;
                 attackedPlayer = _gameState.OtherPlayer;
-
                 damage = currentPlayer.Battler.Damage;
-                attackedPlayer.Battler.Hp -= damage;
-
                 View.NotifyFightLog(currentPlayer, attackedPlayer, damage);
 
                 if (attackedPlayer.Battler.IsDead())
