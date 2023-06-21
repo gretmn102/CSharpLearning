@@ -89,8 +89,7 @@ namespace App
             }
             else
             {
-                _gameState.FirstPlayer.Battler = CreateBattler();
-                _gameState.SecondPlayer.Battler = CreateBattler();
+                _gameState.Reset();
                 StartMove();
             }
         }
