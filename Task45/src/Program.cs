@@ -4,8 +4,8 @@ namespace App
     {
         public static void Main()
         {
-            View view = new();
-            view.Start();
+            Controller controller = new();
+            controller.Start();
         }
     }
 }
