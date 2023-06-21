@@ -9,11 +9,38 @@ namespace App
             controller.SetFirstPlayerName(firstPlayerName);
         }
 
+        public static BattlerType SelectBattlerType()
+        {
+            Console.WriteLine("Выберите цифрой класс котца:");
+
+            int i = 1;
+            foreach (string name in BattlerTypesList.RuNames)
+            {
+                Console.WriteLine($"{i}. {name}");
+                i++;
+            }
+
+            int selectedIndex = ConsoleHelpers.ReadInt(1, BattlerTypesList.Values.Length + 1) - 1;
+            return BattlerTypesList.Values[selectedIndex];
+        }
+
+        public static void GetFirstPlayerBattlerType(Controller controller)
+        {
+            BattlerType battlerType = SelectBattlerType();
+            controller.SetFirstPlayerBattlerType(battlerType);
+        }
+
         public static void GetSecondPlayerName(Controller controller)
         {
             Console.Write("Назови себя, второй игрок: ");
             string secondPlayerInput = ConsoleHelpers.ReadLine("Имярек2");
             controller.SetSecondPlayerName(secondPlayerInput);
+        }
+
+        public static void GetSecondPlayerBattlerType(Controller controller)
+        {
+            BattlerType battlerType = SelectBattlerType();
+            controller.SetSecondPlayerBattleType(battlerType);
         }
 
         public static void NotifyPlayerMovesFirst(Player player)
