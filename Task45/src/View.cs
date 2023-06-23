@@ -48,9 +48,14 @@ namespace App
             Console.WriteLine($"Игрок {player.Name} ходит первым.");
         }
 
-        public static void NotifyFightLog(Player currentPlayer, Player attackedPlayer, int damage)
+        public static void NotifyAttack(Player currentPlayer, Player attackedPlayer, int damage)
         {
             Console.WriteLine($"Котец {currentPlayer.Name} куськает котца {attackedPlayer.Name} и наносит {damage} кусьрона! У того остается {attackedPlayer.Battler.Hp} терпения.");
+        }
+
+        public static void NotifyDodge(Player currentPlayer, Player attackedPlayer)
+        {
+            Console.WriteLine($"Котец {attackedPlayer.Name} увернулся от котца {currentPlayer.Name}!");
         }
 
         public static void NotifyGameEnd(Player loser)

@@ -80,21 +80,26 @@ namespace App
         {
             Player currentPlayer;
             Player attackedPlayer;
-            int damage;
+            int? damage;
             Player? loser = null;
             while (loser == null)
             {
-                _gameState.Attack();
-
+                damage = _gameState.Attack();
                 currentPlayer = _gameState.CurrentPlayer;
                 attackedPlayer = _gameState.OtherPlayer;
-                damage = currentPlayer.Battler.Damage;
-                View.NotifyFightLog(currentPlayer, attackedPlayer, damage);
-
-                if (attackedPlayer.Battler.IsDead())
+                if (!damage.HasValue)
                 {
-                    loser = attackedPlayer;
-                    break;
+                    View.NotifyDodge(currentPlayer, attackedPlayer);
+                }
+                else
+                {
+                    View.NotifyAttack(currentPlayer, attackedPlayer, damage.Value);
+
+                    if (attackedPlayer.Battler.IsDead())
+                    {
+                        loser = attackedPlayer;
+                        break;
+                    }
                 }
 
                 _gameState.NextPlayer();

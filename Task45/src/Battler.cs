@@ -6,7 +6,8 @@ namespace App
         public int MaxHp
         {
             get { return _maxHp; }
-            set {
+            set
+            {
                 _maxHp = value;
                 if (_hp > value)
                 {
@@ -24,9 +25,20 @@ namespace App
 
         public int Damage { get; }
 
-        public void Attack(Battler enemy)
+        public Dodgeable? Dodgeable { get; set; }
+
+        public int? Attack(Battler enemy)
         {
-            enemy.Hp -= Damage;
+            Dodgeable? dodgeable = enemy.Dodgeable;
+            if (dodgeable != null && dodgeable.CalcIsDodge())
+            {
+                return null;
+            }
+            else
+            {
+                enemy.Hp -= Damage;
+                return Damage;
+            }
         }
 
         public void Reset()

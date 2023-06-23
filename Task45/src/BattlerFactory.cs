@@ -8,7 +8,10 @@ namespace App
             return battlerType switch
             {
                 BattlerType.Simpleton => new Battler(30, 5),
-                BattlerType.Strongman => new Battler(60, 2),
+                BattlerType.Dodger => new Battler(15, 5)
+                {
+                    Dodgeable = new Dodgeable(0.3)
+                },
                 _ => throw new NotImplementedException(battlerType.ToString()),
             };
         }
