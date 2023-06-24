@@ -80,32 +80,53 @@ namespace App
         {
             Player currentPlayer;
             Player attackedPlayer;
-            int? damage;
-            Player? loser = null;
-            while (loser == null)
+            currentPlayer = _gameState.CurrentPlayer;
+            attackedPlayer = _gameState.OtherPlayer;
+            View.GetBattlerActionType(this, currentPlayer, attackedPlayer);
+        }
+
+        public void Move(BattlerActionType actionType)
+        {
+            Player currentPlayer = _gameState.CurrentPlayer;
+            Player attackedPlayer = _gameState.OtherPlayer;
+
+            switch (actionType)
             {
-                damage = _gameState.Attack();
-                currentPlayer = _gameState.CurrentPlayer;
-                attackedPlayer = _gameState.OtherPlayer;
-                if (!damage.HasValue)
-                {
-                    View.NotifyDodge(currentPlayer, attackedPlayer);
-                }
-                else
-                {
-                    View.NotifyAttack(currentPlayer, attackedPlayer, damage.Value);
+                case BattlerActionType.Attack:
+                    int? damage;
 
-                    if (attackedPlayer.Battler.IsDead())
+                    damage = _gameState.Attack();
+                    if (!damage.HasValue)
                     {
-                        loser = attackedPlayer;
-                        break;
+                        View.NotifyDodge(currentPlayer, attackedPlayer);
+                        _gameState.NextPlayer();
+                        StartMove();
+                        return;
                     }
-                }
+                    else
+                    {
+                        View.NotifySuccessfulAttack(currentPlayer, attackedPlayer, damage.Value);
 
-                _gameState.NextPlayer();
+                        if (attackedPlayer.Battler.IsDead())
+                        {
+                            Player loser = attackedPlayer;
+                            GameEnd(loser);
+                            return;
+                        }
+                        else
+                        {
+                            _gameState.NextPlayer();
+                            StartMove();
+                            return;
+                        }
+                    }
+
+                case BattlerActionType.Pass:
+                    View.NotifyPass(currentPlayer, attackedPlayer);
+                    _gameState.NextPlayer();
+                    StartMove();
+                    return;
             }
-
-            GameEnd(loser);
         }
 
         public void GameEnd(Player loser)

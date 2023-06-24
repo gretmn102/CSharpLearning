@@ -43,19 +43,55 @@ namespace App
             controller.SetSecondPlayerBattleType(battlerType);
         }
 
+        public static void PressAnyKeyToContinue()
+        {
+            Console.WriteLine("(Нажмите любую клавишу, чтобы продолжить)");
+            Console.ReadKey();
+        }
+
         public static void NotifyPlayerMovesFirst(Player player)
         {
             Console.WriteLine($"Игрок {player.Name} ходит первым.");
+            PressAnyKeyToContinue();
         }
 
-        public static void NotifyAttack(Player currentPlayer, Player attackedPlayer, int damage)
+        public static BattlerActionType SelectBattlerActionType(Player currentPlayer)
+        {
+            Console.WriteLine($"{currentPlayer.Name}, выбери действие:");
+
+            int i = 1;
+            foreach (string name in BattlerActionTypeList.RuNames)
+            {
+                Console.WriteLine($"{i}. {name}");
+                i++;
+            }
+
+            int selectedIndex = ConsoleHelpers.ReadInt(1, BattlerActionTypeList.Values.Length + 1) - 1;
+            return BattlerActionTypeList.Values[selectedIndex];
+        }
+
+        public static void GetBattlerActionType(Controller controller, Player currentPlayer, Player attackedPlayer)
+        {
+            BattlerActionType battlerActionType = SelectBattlerActionType(currentPlayer);
+            controller.Move(battlerActionType);
+        }
+
+        public static void NotifySuccessfulAttack(Player currentPlayer, Player attackedPlayer, int damage)
         {
             Console.WriteLine($"Котец {currentPlayer.Name} куськает котца {attackedPlayer.Name} и наносит {damage} кусьрона! У того остается {attackedPlayer.Battler.Hp} терпения.");
+            PressAnyKeyToContinue();
         }
 
         public static void NotifyDodge(Player currentPlayer, Player attackedPlayer)
         {
             Console.WriteLine($"Котец {attackedPlayer.Name} увернулся от котца {currentPlayer.Name}!");
+            PressAnyKeyToContinue();
+        }
+
+        public static void NotifyPass(Player currentPlayer, Player attackedPlayer)
+        {
+            Console.WriteLine($"{currentPlayer.Name} спасовал!");
+            PressAnyKeyToContinue();
         }
 
         public static void NotifyGameEnd(Player loser)
