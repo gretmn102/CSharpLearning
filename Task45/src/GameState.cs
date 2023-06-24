@@ -70,9 +70,14 @@ namespace App
             _secondPlayer.Battler.Reset();
         }
 
-        public int? Attack()
+        public IBattlerActionResult Attack()
         {
             return CurrentPlayer.Battler.Attack(OtherPlayer.Battler);
+        }
+
+        public IBattlerActionResult AngryAttack()
+        {
+            return CurrentPlayer.Battler.AngryAttack(OtherPlayer.Battler);
         }
 
         public GameState(Player firstPlayer, Player secondPlayer)

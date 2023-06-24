@@ -27,18 +27,49 @@ namespace App
 
         public Dodgeable? Dodgeable { get; set; }
 
-        public int? Attack(Battler enemy)
+        public Angreable? Angreable { get; set; }
+
+        public AngryAttackable? AngryAttackable { get; set; }
+
+        public bool CalcIsDodge()
         {
-            Dodgeable? dodgeable = enemy.Dodgeable;
-            if (dodgeable != null && dodgeable.CalcIsDodge())
+            Dodgeable? dodgeable = Dodgeable;
+            return dodgeable != null && dodgeable.CalcIsDodge();
+        }
+
+        public IBattlerActionResult Attack(Battler enemy)
+        {
+            if (Angreable != null)
             {
-                return null;
+                Angreable.Current++;
+            }
+
+            if (enemy.CalcIsDodge())
+            {
+                return new EnemyDodged();
             }
             else
             {
                 enemy.Hp -= Damage;
-                return Damage;
+                return new SuccessfulAttack(Damage);
             }
+        }
+
+        public List<BattlerActionType> GetPossibleActionTypes()
+        {
+            List<BattlerActionType> actionTypes = new()
+            {
+                BattlerActionType.Attack
+            };
+
+            if (AngryAttackable != null)
+            {
+                actionTypes.Add(BattlerActionType.AngryAttack);
+            }
+
+            actionTypes.Add(BattlerActionType.Pass);
+
+            return actionTypes;
         }
 
         public void Reset()
@@ -49,6 +80,18 @@ namespace App
         public bool IsDead()
         {
             return _hp <= 0;
+        }
+
+        public IBattlerActionResult AngryAttack(Battler enemy)
+        {
+            if (AngryAttackable == null)
+            {
+                return new BattlerIsNotAngryable();
+            }
+            else
+            {
+                return AngryAttackable.Attack(this, enemy);
+            }
         }
 
         public Battler(int maxHp, int damage)

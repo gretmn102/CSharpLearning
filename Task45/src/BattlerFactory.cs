@@ -12,6 +12,11 @@ namespace App
                 {
                     Dodgeable = new Dodgeable(0.3)
                 },
+                BattlerType.Berserk => new Battler(15, 5)
+                {
+                    Angreable = new Angreable(3),
+                    AngryAttackable = new AngryAttackable(3, 3)
+                },
                 _ => throw new NotImplementedException(battlerType.ToString()),
             };
         }

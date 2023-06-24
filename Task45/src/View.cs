@@ -59,15 +59,20 @@ namespace App
         {
             Console.WriteLine($"{currentPlayer.Name}, выбери действие:");
 
+            List<BattlerActionType> actionTypes = currentPlayer.Battler.GetPossibleActionTypes();
+
             int i = 1;
-            foreach (string name in BattlerActionTypeList.RuNames)
+            string name;
+            var dictionary = BattlerActionTypeList.ValuesRuNamesDictionary;
+            foreach (BattlerActionType actionType in actionTypes)
             {
+                name = dictionary[actionType];
                 Console.WriteLine($"{i}. {name}");
                 i++;
             }
 
-            int selectedIndex = ConsoleHelpers.ReadInt(1, BattlerActionTypeList.Values.Length + 1) - 1;
-            return BattlerActionTypeList.Values[selectedIndex];
+            int selectedIndex = ConsoleHelpers.ReadInt(1, actionTypes.Count + 1) - 1;
+            return actionTypes[selectedIndex];
         }
 
         public static void GetBattlerActionType(Controller controller, Player currentPlayer, Player attackedPlayer)
@@ -105,6 +110,12 @@ namespace App
             Console.Write("Сразиться еще раз? (д/н): ");
             bool isStartAgain = ConsoleHelpers.YesOrNo();
             controller.SetIsStartAgain(isStartAgain);
+        }
+
+        internal static void NotifyNotEnoughAngry()
+        {
+            Console.WriteLine($"Недостаточно очков ярости!");
+            PressAnyKeyToContinue();
         }
     }
 }

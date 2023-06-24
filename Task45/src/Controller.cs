@@ -93,33 +93,76 @@ namespace App
             switch (actionType)
             {
                 case BattlerActionType.Attack:
-                    int? damage;
-
-                    damage = _gameState.Attack();
-                    if (!damage.HasValue)
+                {
+                    IBattlerActionResult actionResult = _gameState.Attack();
+                    switch (actionResult)
                     {
-                        View.NotifyDodge(currentPlayer, attackedPlayer);
-                        _gameState.NextPlayer();
-                        StartMove();
-                        return;
-                    }
-                    else
-                    {
-                        View.NotifySuccessfulAttack(currentPlayer, attackedPlayer, damage.Value);
-
-                        if (attackedPlayer.Battler.IsDead())
-                        {
-                            Player loser = attackedPlayer;
-                            GameEnd(loser);
-                            return;
-                        }
-                        else
-                        {
+                        case EnemyDodged:
+                            View.NotifyDodge(currentPlayer, attackedPlayer);
                             _gameState.NextPlayer();
                             StartMove();
                             return;
-                        }
+
+                        case SuccessfulAttack successfulAttack:
+                            View.NotifySuccessfulAttack(currentPlayer, attackedPlayer, successfulAttack.ResultDamage);
+
+                            if (attackedPlayer.Battler.IsDead())
+                            {
+                                Player loser = attackedPlayer;
+                                GameEnd(loser);
+                                return;
+                            }
+                            else
+                            {
+                                _gameState.NextPlayer();
+                                StartMove();
+                                return;
+                            }
+
+                        case BattlerIsNotAngryable:
+                            throw new Exception(nameof(BattlerIsNotAngryable));
+
+                        default:
+                            throw new Exception($"{actionResult.GetType().FullName} not implemented yet!");
                     }
+                }
+
+                case BattlerActionType.AngryAttack:
+                {
+                    IBattlerActionResult actionResult = _gameState.AngryAttack();
+                    switch (actionResult)
+                    {
+                        case EnemyDodged:
+                            View.NotifyDodge(currentPlayer, attackedPlayer);
+                            _gameState.NextPlayer();
+                            StartMove();
+                            return;
+
+                        case SuccessfulAttack successfulAttack:
+                            View.NotifySuccessfulAttack(currentPlayer, attackedPlayer, successfulAttack.ResultDamage);
+
+                            if (attackedPlayer.Battler.IsDead())
+                            {
+                                Player loser = attackedPlayer;
+                                GameEnd(loser);
+                                return;
+                            }
+                            else
+                            {
+                                _gameState.NextPlayer();
+                                StartMove();
+                                return;
+                            }
+
+                        case NotEnoughAngry:
+                            View.NotifyNotEnoughAngry();
+                            StartMove();
+                            return;
+
+                        default:
+                            throw new Exception($"{actionResult.GetType().FullName} not implemented yet!");
+                    }
+                }
 
                 case BattlerActionType.Pass:
                     View.NotifyPass(currentPlayer, attackedPlayer);

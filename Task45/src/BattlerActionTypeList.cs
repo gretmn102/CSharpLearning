@@ -5,7 +5,8 @@ namespace App
         public static readonly BattlerActionType[] Values = Enum.GetValues<BattlerActionType>();
 
         public static readonly Dictionary<BattlerActionType, string> ValuesRuNamesDictionary = new() {
-            { BattlerActionType.Attack, "Атаковать" },
+            { BattlerActionType.Attack, "Кусь" },
+            { BattlerActionType.AngryAttack, "Злокусь" },
             { BattlerActionType.Pass, "Пропустить" },
         };
 
