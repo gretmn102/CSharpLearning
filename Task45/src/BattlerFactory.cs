@@ -17,6 +17,10 @@ namespace App
                     Angreable = new Angreable(3),
                     AngryAttackable = new AngryAttackable(3, 3)
                 },
+                BattlerType.PatientMan => new Battler(20, 3)
+                {
+                    Patientable = new Patientable(3)
+                },
                 _ => throw new NotImplementedException(battlerType.ToString()),
             };
         }

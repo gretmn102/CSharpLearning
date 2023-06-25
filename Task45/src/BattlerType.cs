@@ -4,6 +4,7 @@ namespace App
     {
         Simpleton,
         Dodger,
-        Berserk
+        Berserk,
+        PatientMan,
     }
 }

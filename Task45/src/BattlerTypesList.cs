@@ -7,7 +7,8 @@ namespace App
         public static readonly Dictionary<BattlerType, string> ValuesRuNamesDictionary = new() {
             { BattlerType.Simpleton, "Дворокот" },
             { BattlerType.Dodger, "Ловкот" },
-            { BattlerType.Berserk, "Берсерк" }
+            { BattlerType.Berserk, "Берсерк" },
+            { BattlerType.PatientMan, "Терплюн" }
         };
 
         public static readonly string[] RuNames = ValuesRuNamesDictionary.Select(x => x.Value).ToArray();

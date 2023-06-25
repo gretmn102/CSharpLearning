@@ -31,9 +31,13 @@ namespace App
             }
             else
             {
+                angreable.Current -= AngryCost;
+
                 int damage = current.Damage * DamageMultiplier;
                 enemy.Hp -= damage;
-                angreable.Current -= AngryCost;
+
+                enemy.Patientable?.Restore(enemy);
+
                 return new SuccessfulAttack(damage);
             }
         }

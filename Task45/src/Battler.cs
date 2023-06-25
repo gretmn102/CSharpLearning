@@ -31,6 +31,8 @@ namespace App
 
         public AngryAttackable? AngryAttackable { get; set; }
 
+        public Patientable? Patientable { get; set; }
+
         public bool CalcIsDodge()
         {
             Dodgeable? dodgeable = Dodgeable;
@@ -51,6 +53,9 @@ namespace App
             else
             {
                 enemy.Hp -= Damage;
+
+                enemy.Patientable?.Restore(enemy);
+
                 return new SuccessfulAttack(Damage);
             }
         }
