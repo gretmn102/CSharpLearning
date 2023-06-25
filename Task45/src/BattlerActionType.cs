@@ -4,6 +4,7 @@ namespace App
     {
         Attack,
         AngryAttack,
+        CastFireball,
         Pass
     }
 }

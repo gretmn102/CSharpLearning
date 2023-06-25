@@ -16,5 +16,9 @@ namespace App
 
     public struct NotEnoughAngry : IBattlerActionResult { }
 
+    public struct NotEnoughMana : IBattlerActionResult { }
+
     public struct BattlerIsNotAngryable : IBattlerActionResult { }
+
+    public struct BattlerIsNotFireballable : IBattlerActionResult { }
 }

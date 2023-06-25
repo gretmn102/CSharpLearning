@@ -35,6 +35,10 @@ namespace App
 
         public LifeStealable? LifeStealable { get; set; }
 
+        public Manable? Manable { get; set; }
+
+        public Fireballable? Fireballable { get; set; }
+
         public bool CalcIsDodge()
         {
             Dodgeable? dodgeable = Dodgeable;
@@ -76,6 +80,11 @@ namespace App
                 actionTypes.Add(BattlerActionType.AngryAttack);
             }
 
+            if (Fireballable != null)
+            {
+                actionTypes.Add(BattlerActionType.CastFireball);
+            }
+
             actionTypes.Add(BattlerActionType.Pass);
 
             return actionTypes;
@@ -100,6 +109,18 @@ namespace App
             else
             {
                 return AngryAttackable.Attack(this, enemy);
+            }
+        }
+
+        public IBattlerActionResult CastFireball(Battler enemy)
+        {
+            if (Fireballable == null)
+            {
+                return new BattlerIsNotFireballable();
+            }
+            else
+            {
+                return Fireballable.Cast(this, enemy);
             }
         }
 

@@ -7,6 +7,7 @@ namespace App
         public static readonly Dictionary<BattlerActionType, string> ValuesRuNamesDictionary = new() {
             { BattlerActionType.Attack, "Кусь" },
             { BattlerActionType.AngryAttack, "Злокусь" },
+            { BattlerActionType.CastFireball, "Огнешар" },
             { BattlerActionType.Pass, "Пропустить" },
         };
 

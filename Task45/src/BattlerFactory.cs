@@ -21,9 +21,10 @@ namespace App
                 {
                     Patientable = new Patientable(3)
                 },
-                BattlerType.Vampire => new Battler(20, 3)
+                BattlerType.Wizzard => new Battler(15, 3)
                 {
-                    LifeStealable = new LifeStealable(3)
+                    Manable = new Manable(60),
+                    Fireballable = new Fireballable(20, 8)
                 },
                 _ => throw new NotImplementedException(battlerType.ToString()),
             };

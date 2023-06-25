@@ -80,6 +80,11 @@ namespace App
             return CurrentPlayer.Battler.AngryAttack(OtherPlayer.Battler);
         }
 
+        public IBattlerActionResult CastFireball()
+        {
+            return CurrentPlayer.Battler.CastFireball(OtherPlayer.Battler);
+        }
+
         public GameState(Player firstPlayer, Player secondPlayer)
         {
             _firstPlayer = firstPlayer;

@@ -117,5 +117,11 @@ namespace App
             Console.WriteLine($"Недостаточно очков ярости!");
             PressAnyKeyToContinue();
         }
+
+        internal static void NotifyNotEnoughMana()
+        {
+            Console.WriteLine($"Недостаточно очков маны!");
+            PressAnyKeyToContinue();
+        }
     }
 }
