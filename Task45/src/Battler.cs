@@ -33,6 +33,8 @@ namespace App
 
         public Patientable? Patientable { get; set; }
 
+        public LifeStealable? LifeStealable { get; set; }
+
         public bool CalcIsDodge()
         {
             Dodgeable? dodgeable = Dodgeable;
@@ -53,6 +55,8 @@ namespace App
             else
             {
                 enemy.Hp -= Damage;
+
+                LifeStealable?.Restore(this);
 
                 enemy.Patientable?.Restore(enemy);
 

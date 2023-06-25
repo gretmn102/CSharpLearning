@@ -6,5 +6,6 @@ namespace App
         Dodger,
         Berserk,
         PatientMan,
+        Vampire
     }
 }

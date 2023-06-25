@@ -21,6 +21,10 @@ namespace App
                 {
                     Patientable = new Patientable(3)
                 },
+                BattlerType.Vampire => new Battler(20, 3)
+                {
+                    LifeStealable = new LifeStealable(3)
+                },
                 _ => throw new NotImplementedException(battlerType.ToString()),
             };
         }

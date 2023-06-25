@@ -8,7 +8,8 @@ namespace App
             { BattlerType.Simpleton, "Дворокот" },
             { BattlerType.Dodger, "Ловкот" },
             { BattlerType.Berserk, "Берсерк" },
-            { BattlerType.PatientMan, "Терплюн" }
+            { BattlerType.PatientMan, "Терплюн" },
+            { BattlerType.Vampire, "Вампокот" }
         };
 
         public static readonly string[] RuNames = ValuesRuNamesDictionary.Select(x => x.Value).ToArray();

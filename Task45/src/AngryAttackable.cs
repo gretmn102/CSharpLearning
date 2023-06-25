@@ -36,6 +36,8 @@ namespace App
                 int damage = current.Damage * DamageMultiplier;
                 enemy.Hp -= damage;
 
+                current.LifeStealable?.Restore(current);
+
                 enemy.Patientable?.Restore(enemy);
 
                 return new SuccessfulAttack(damage);
